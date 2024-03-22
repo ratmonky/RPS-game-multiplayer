@@ -34,7 +34,7 @@ public class PlayerScript : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                ServerRPSRpc(1);
+                RPSServerRpc(1);
 
             }
 
@@ -74,7 +74,7 @@ public class PlayerScript : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                ServerRPSRpc(1);
+                RPSServerRpc(1);
             }
 
             if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -112,8 +112,8 @@ public class PlayerScript : NetworkBehaviour
 
     }
     
-    //[Rpc(SendTo.ClientsAndHost)]
-    private void ServerRPSRpc(int input)
+    [ServerRpc]
+    private void RPSServerRpc(int input)
     {
         if(input == 1) {
             DestroyCurrentObject();
