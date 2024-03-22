@@ -22,26 +22,23 @@ public class PlayerScript : NetworkBehaviour
     }
 
     // Update is called once per frame
+
+
     void Update()
     {
-        // Only execute this code if this is the owner client with Id 0
+
         if (IsOwner && OwnerClientId == 0)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                // Instantiate the object only on the client with OwnerClientId 0
-                DestroyCurrentObject();
-                currentObject = Instantiate(rock, transform.position, Quaternion.identity);
-                SetReadyHandVisibility(false); // Hide the ready hand
-                keyPressed = true;
-                Debug.Log("A (rock) key is pressed.");
+                ServerRPSRpc(1);
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
                 // Instantiate the object only on the client with OwnerClientId 0
                 DestroyCurrentObject();
-                currentObject = Instantiate(paper, transform.position, Quaternion.identity);
+                currentObject = Instantiate(paper, transform.position, Quaternion.Euler(0, 180, 0));
                 SetReadyHandVisibility(false); // Hide the ready hand
                 keyPressed = true;
                 Debug.Log("S (paper) key is pressed.");
@@ -67,23 +64,18 @@ public class PlayerScript : NetworkBehaviour
                 Debug.Log("All keys are released.");
             }
         }
-        if (!IsOwner && OwnerClientId == 1)
+        if (OwnerClientId == 1)
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                // Instantiate the object only on the client with OwnerClientId 0
-                DestroyCurrentObject();
-                currentObject = Instantiate(rock, transform.position, Quaternion.identity);
-                SetReadyHandVisibility(false); // Hide the ready hand
-                keyPressed = true;
-                Debug.Log("A (rock) key is pressed.");
+                ServerRPSRpc(1);
             }
 
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 // Instantiate the object only on the client with OwnerClientId 0
                 DestroyCurrentObject();
-                currentObject = Instantiate(paper, transform.position, Quaternion.identity);
+                currentObject = Instantiate(paper, transform.position, Quaternion.Euler(0, 180, 0));
                 SetReadyHandVisibility(false); // Hide the ready hand
                 keyPressed = true;
                 Debug.Log("S (paper) key is pressed.");
@@ -93,7 +85,7 @@ public class PlayerScript : NetworkBehaviour
             {
                 // Instantiate the object only on the client with OwnerClientId 0
                 DestroyCurrentObject();
-                currentObject = Instantiate(scissors, transform.position, Quaternion.identity);
+                currentObject = Instantiate(scissors, transform.position, Quaternion.Euler(0, 180, 0));
                 SetReadyHandVisibility(false); // Hide the ready hand
                 keyPressed = true;
                 Debug.Log("D (scissors) key is pressed.");
@@ -104,14 +96,90 @@ public class PlayerScript : NetworkBehaviour
             {
                 DestroyCurrentObject();
                 SetReadyHandVisibility(true); // Show the ready hand
-                currentObject = Instantiate(ready, transform.position, Quaternion.identity);
+                currentObject = Instantiate(ready, transform.position, Quaternion.Euler(0, 180, 0));
                 keyPressed = false;
                 Debug.Log("All keys are released.");
             }
         }
 
 
+
     }
+    [Rpc(SendTo.ClientsAndHost)]
+    private void ServerRPSRpc(int input)
+    {
+        if(input == 1) {
+            DestroyCurrentObject();
+            currentObject = Instantiate(rock, transform.position, Quaternion.identity);
+            SetReadyHandVisibility(false); // Hide the ready hand
+            keyPressed = true;
+            Debug.Log("A (rock) key is pressed.");
+        }
+        if (input == 2){
+            // Instantiate the object only on the client with OwnerClientId 0
+            DestroyCurrentObject();
+            currentObject = Instantiate(paper, transform.position, Quaternion.Euler(0, 180, 0));
+            SetReadyHandVisibility(false); // Hide the ready hand
+            keyPressed = true;
+            Debug.Log("S (paper) key is pressed.");
+        }
+        if (input == 3)
+        {
+            DestroyCurrentObject();
+            currentObject = Instantiate(scissors, transform.position, Quaternion.identity);
+            SetReadyHandVisibility(false); // Hide the ready hand
+            keyPressed = true;
+            Debug.Log("D (scissors) key is pressed.");
+
+
+        }
+        if (input == 4)
+        {
+
+            DestroyCurrentObject();
+            currentObject = Instantiate(rock, transform.position, Quaternion.Euler(0, 180, 0));
+            SetReadyHandVisibility(false); // Hide the ready hand
+            keyPressed = true;
+            Debug.Log("A (rock) key is pressed.");
+
+        }
+        if (input == 5)
+        {
+            DestroyCurrentObject();
+            currentObject = Instantiate(paper, transform.position, Quaternion.Euler(0, 180, 0));
+            SetReadyHandVisibility(false); // Hide the ready hand
+            keyPressed = true;
+            Debug.Log("S (paper) key is pressed.");
+
+
+        }
+        if (input == 6)
+        {
+            DestroyCurrentObject();
+            currentObject = Instantiate(scissors, transform.position, Quaternion.Euler(0, 180, 0));
+            SetReadyHandVisibility(false); // Hide the ready hand
+            keyPressed = true;
+            Debug.Log("D (scissors) key is pressed.");
+
+
+        }
+        if (input == 7)
+        {
+
+
+
+        }
+        if (input == 8)
+        {
+
+
+
+        }
+
+
+    }
+
+
 
     // Destroy the current object if it exists
     private void DestroyCurrentObject()
