@@ -9,6 +9,9 @@ public class PlayerScript : NetworkBehaviour
     [SerializeField] private GameObject paper;
     [SerializeField] private GameObject scissors;
     [SerializeField] private GameObject ready;
+    [SerializeField] private AudioSource slash;
+    [SerializeField] private AudioSource crumple;
+    [SerializeField] private AudioSource smash;
 
     private GameObject currentObject; // Reference to the currently instantiated object
     private bool keyPressed = false; // Flag to track if any key is currently pressed
@@ -32,6 +35,7 @@ public class PlayerScript : NetworkBehaviour
             if (Input.GetKeyDown(KeyCode.A))
             {
                 ServerRPSRpc(1);
+
             }
 
             if (Input.GetKeyDown(KeyCode.S))
@@ -42,6 +46,7 @@ public class PlayerScript : NetworkBehaviour
                 SetReadyHandVisibility(false); // Hide the ready hand
                 keyPressed = true;
                 Debug.Log("S (paper) key is pressed.");
+                
             }
 
             if (Input.GetKeyDown(KeyCode.D))
@@ -52,6 +57,7 @@ public class PlayerScript : NetworkBehaviour
                 SetReadyHandVisibility(false); // Hide the ready hand
                 keyPressed = true;
                 Debug.Log("D (scissors) key is pressed.");
+               
             }
 
             // Destroy the object when any key is released and no key is pressed
@@ -105,7 +111,8 @@ public class PlayerScript : NetworkBehaviour
 
 
     }
-    [Rpc(SendTo.ClientsAndHost)]
+    
+    //[Rpc(SendTo.ClientsAndHost)]
     private void ServerRPSRpc(int input)
     {
         if(input == 1) {
@@ -114,6 +121,7 @@ public class PlayerScript : NetworkBehaviour
             SetReadyHandVisibility(false); // Hide the ready hand
             keyPressed = true;
             Debug.Log("A (rock) key is pressed.");
+            smash.Play();
         }
         if (input == 2){
             // Instantiate the object only on the client with OwnerClientId 0
@@ -122,6 +130,7 @@ public class PlayerScript : NetworkBehaviour
             SetReadyHandVisibility(false); // Hide the ready hand
             keyPressed = true;
             Debug.Log("S (paper) key is pressed.");
+            crumple.Play();
         }
         if (input == 3)
         {
@@ -130,6 +139,7 @@ public class PlayerScript : NetworkBehaviour
             SetReadyHandVisibility(false); // Hide the ready hand
             keyPressed = true;
             Debug.Log("D (scissors) key is pressed.");
+            slash.Play();
 
 
         }
